@@ -1,3 +1,22 @@
+<style lang="scss" scoped>
+.login-form {
+    width: 80%;
+    padding: 20px;
+    box-shadow: 0 0 2px #d2d2d2;
+    margin: 150px auto;
+    transition: all 0.5s ease;
+    @media only screen and (min-width: 568px) {
+        max-width: 350px;
+    }
+    @media only screen and (min-width: 768px) {
+        max-width: 400px;
+    }
+    @media only screen and (min-width: 1200px) {
+        max-width: 350px;
+    }
+}
+</style>
+
 <template>
 <div class="login-form">
 	<logo></logo>
@@ -49,7 +68,11 @@ export default {
 		return {
 			form: {
 				email: '',
-				password: ''
+				password: '',
+				error: {
+					status: false,
+					message: ''
+				}
 			}
 		}
 	},
@@ -85,8 +108,6 @@ export default {
 				- submit form event to php
 					- check if user exists.
 					- TRUE - REDIRECT user to login route FALSE - CREATE user account in
-
-
 			*/
 
 			if (result.error) {
@@ -108,10 +129,18 @@ export default {
 						form_data: vm.form
 					},
 					success: function(data) {
-						console.log("FAKE AJAX RESPONSE");
-						console.log(data);
+						let $data = JSON.parse(data);
 
-						console.log(JSON.parse(data));
+						switch ($data.status.code) {
+							case 200:
+
+								break;
+							case 400:
+
+								break;
+							default:
+
+						}
 					},
 					error: function() {
 						// IDEA:
@@ -126,25 +155,3 @@ export default {
 	}
 }
 </script>
-
-<style lang="scss" scoped>
-.login-form {
-    width: 80%;
-    padding: 20px;
-    box-shadow: 0 0 2px #d2d2d2;
-    margin: 150px auto;
-    transition: all 0.5s ease;
-
-    @media only screen and (min-width: 568px) {
-        max-width: 350px;
-    }
-
-    @media only screen and (min-width: 768px) {
-        max-width: 400px;
-    }
-
-    @media only screen and (min-width: 1200px) {
-        max-width: 350px;
-    }
-}
-</style>
