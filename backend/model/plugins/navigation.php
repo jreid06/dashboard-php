@@ -1,6 +1,6 @@
 <?php
 
-include '../dbconnect.php';
+// include '../dbconnect.php';
 
 /*
     // NOTE:
@@ -19,4 +19,5 @@ $links = array(
 $navigation_plugin = new Plugin('navigation');
 
 $navigation_plugin->addFeature('test', $links);
-$navigation_plugin->init();
+
+return $navigation_plugin;

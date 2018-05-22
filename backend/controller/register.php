@@ -27,7 +27,8 @@
             // get user submitted credentials
             $email = $form_data['email'];
             $password = $form_data['password'];
-
+            $permissions = $form_data['permissionLevel'];
+            $reset_password_code = "rset_".bin2hex(random_bytes(10));
 
             // validate email again
             if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
@@ -53,7 +54,11 @@
                         'email' => $email,
                         'password' => $hash_password,
                         'createdAt' => $current_date['readable_date_db'],
-                        'updatedAt' => $current_date['readable_date_db']
+                        'updatedAt' => $current_date['readable_date_db'],
+                        'permissions'=> $permissions,
+                        'login_status'=> 'false',
+                        'device_browser_info' => 'n/a',
+                        'reset_password_code'=> $reset_password_code
                     );
 
                     $user_added = Databasecontrols::insert('users', $fields);
@@ -67,13 +72,7 @@
                                 'request'=> 'ajax'
                             ),
                             'info'=> array(
-                                'message'=> 'Admin account for <strong><i>"'.$email.'"</i></strong> has been created successfully',
-                                'user_data'=> array(
-                                    'email'=> $email,
-                                    'password'=> $hash_password
-                                ),
-                                "user_added"=>$user_added,
-                                'date'=> $current_date
+                                'message'=> 'Admin account for <strong><i>"'.$email.'"</i></strong> has been created successfully'
                             )
                         );
                     } else {
@@ -86,8 +85,7 @@
                                 'request'=> 'ajax'
                             ),
                             'info'=> array(
-                                'message'=> 'error registering user. Error code: <strong>'.$user_added['error_array'][0].'</strong>',
-                                "user_added"=>$user_added
+                                'message'=> 'error registering user. Error code: <strong>'.$user_added['error_array'][0].'</strong>'
                             )
                         );
                     }

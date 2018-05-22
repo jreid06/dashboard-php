@@ -1,32 +1,39 @@
 <template lang="html">
 
     <div class="container-fluid h-100" :style="containerStyles">
-        <div v-if="loading">
-            <div class="row h-100 justify-content-center align-items-center">
-                <!-- <h4>LOADING ...</h4> -->
-            </div>
-        </div>
-        <div v-else>
-            <template v-if="screenWidth > 768">
-                <div class="d-flex flex-nowrap flex-row dashboard-body h-100">
-                        <div class="p-2 dashboard-menu fixed-top" :style="layoutStyles.p1.style1" v-on="{mouseenter: openMenu, mouseleave: closeMenu}">
-                            <div class="menu">
-                                <nav-dashboard></nav-dashboard>
-                            </div>
+        <template v-if="screenWidth > 768">
+            <div class="d-flex flex-nowrap flex-row dashboard-body h-100">
+                <template v-if="route === 'login' || route === 'register'">
+                    <div class="p-2" :style="layoutStyles.p1.style2">
+                        <div class="menu">
+
                         </div>
-                        <div class="p-2" :style="layoutStyles.p2.style1">
-                            <router-view></router-view>
-                        </div>
-                </div>
-            </template>
-            <template v-else>
-                <div class="row h-100 justify-content-center align-items-center">
-                    <div class="col-10 offset-1">
-                        <h4>Please view dashboard on a Tablet, Laptop or Desktop device</h4>
                     </div>
+                    <div class="p-2" :style="layoutStyles.p2.style2">
+                        <router-view></router-view>
+                    </div>
+
+                </template>
+                <template v-else>
+                    <div class="p-2 dashboard-menu fixed-top" :style="layoutStyles.p1.style1" v-on="{mouseenter: openMenu, mouseleave: closeMenu}">
+                        <div class="menu">
+                            <nav-dashboard></nav-dashboard>
+                        </div>
+                    </div>
+                    <div class="p-2" :style="layoutStyles.p2.style1">
+                        <router-view></router-view>
+                    </div>
+
+                </template>
+            </div>
+        </template>
+        <template v-else>
+            <div class="row h-100 justify-content-center align-items-center">
+                <div class="col-10 offset-1">
+                    <h4>Please view dashboard on a Tablet, Laptop or Desktop device</h4>
                 </div>
-            </template>
-        </div>
+            </div>
+        </template>
     </div>
 </template>
 
@@ -36,9 +43,9 @@ export default {
 	components: {
 		'nav-dashboard': Nav
 	},
-	beforeRouteEnter(to, from, next) {
-		next(vm => vm.validateRoute());
-	},
+	// beforeRouteEnter(to, from, next) {
+	// 	// next(vm => vm.validateRoute())
+	// },
 	data: function() {
 		return {
 			route: this.$route.path.split('/')[2],
@@ -48,7 +55,6 @@ export default {
 				paddingRight: '0px',
 				minHeight: '100%'
 			},
-			loading: true,
 			layoutStyles: {
 				p1: {
 					style1: {
@@ -83,15 +89,21 @@ export default {
 	methods: {
 		validateRoute() {
 			const vm = this;
-			console.log(vm.$route.path);
-			vm.authenticateUser();
+			console.log("---");
+			console.log("");
+			console.log("ROUTE: " + this.route ? this.route : 'false route');
+			if (this.route === 'login' || this.route === "register") {
 
+
+			} else {
+				// check if user is authenticated to access this page
+				console.log(vm.$route.path);
+				vm.authenticateUser();
+			}
 		},
 		authenticateUser() {
 			console.log('authenticated user run');
 			console.log("---end");
-
-			const vm = this;
 
 			$.ajax({
 				url: '/backend/model/sessions.php?q=check',
@@ -100,17 +112,12 @@ export default {
 					let $data = JSON.parse(data);
 					switch ($data.status.code) {
 						case 200:
-							vm.loading = false;
-							console.log('USER authenticated');
 
-							setTimeout(function() {
-								console.log('show toaster');
-								toastr.info(`Welcome back ${$data.info.email}`);
-							}, 1000)
+
 
 							break;
 						case 400:
-							console.log('USER NOT authenticated');
+
 							// redirect user to login page
 							window.location = '#/admin/login';
 							break;

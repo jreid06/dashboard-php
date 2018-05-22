@@ -52,9 +52,19 @@ class Databasecontrols extends Connect
         // code...
     }
 
-    public static function updateRow($value='')
+    public static function updateRow($tbl, $fields, $where)
     {
-        // code...
+        parent::checkConnection();
+        $con = parent::returnConnection();
+
+        $update_status = $con->update($tbl, $fields, $where);
+
+        $error = $con->error();
+        if ($error[0] === '00000') {
+            return ['data'=> $update_status, 'status'=> 200];
+        } elseif ($error[0] !== '00000') {
+            return ['data'=> $update_status, 'status'=> 400, 'error_array'=> $error];
+        }
     }
 
     public static function updateField($value='')
