@@ -13,6 +13,7 @@
     "joi": "^13.3.0",
     "material-design-icons": "^3.0.1",
     "net": "^1.0.2",
+    "spinkit": "^1.2.5",
     "store": "^2.0.12",
     "toastr": "^2.1.4",
     "vue": "^2.5.11",

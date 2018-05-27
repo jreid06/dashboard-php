@@ -16,6 +16,9 @@ if (isset($_GET['q'])) {
             )
         );
     } else {
+        // check if user already exists
+        $user_exists = Databasecontrols::checkDataExists('users', ["id","email","password","login_status","permissions"], 'email', ["email"=>$_SESSION['uem']]);
+
         $response = array(
             'status'=> array(
                 'code'=> 200,
@@ -23,6 +26,11 @@ if (isset($_GET['q'])) {
             ),
             'info'=> array(
                 'message'=> 'you are logged in. Dashboard is accessible',
+                'user_info'=>array(
+                    'permissions'=>$user_exists['data']['permissions'],
+                    'email'=>$user_exists['data']['email'],
+                    'id'=>$user_exists['data']['id']
+                ),
                 'email'=>$_SESSION['uem']
             )
         );

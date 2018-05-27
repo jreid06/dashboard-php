@@ -17,7 +17,7 @@
         if ($valid_email) {
 
             // check if user already exists
-            $user_exists = Databasecontrols::checkDataExists('users', ["email","password","login_status"], 'email', ["email"=>$email]);
+            $user_exists = Databasecontrols::checkDataExists('users', ["id","email","password","login_status","permissions"], 'email', ["email"=>$email]);
 
             if (isset($user_exists['data']['email'])) {
 
@@ -81,6 +81,11 @@
                             ),
                             'info'=> array(
                                 'message'=> 'user logged in successfully. password verified',
+                                'user_info'=>array(
+                                    'permissions'=>$user_exists['data']['permissions'],
+                                    'email'=>$user_exists['data']['email'],
+                                    'id'=>$user_exists['data']['id']
+                                ),
                                 'brswr'=>$browser_details,
                                 'fields'=> $fields
                             )

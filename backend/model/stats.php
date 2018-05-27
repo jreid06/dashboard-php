@@ -24,4 +24,27 @@ class get_stat extends Databasecontrols
 
         return $response;
     }
+
+    public function activeAdminUsers()
+    {
+        $active_users = parent::selectData('users', ['id', 'email', 'last_login_date', 'createdAt'], ['login_status'=>'true']);
+
+        // $response = array();
+        if ($active_users['data']) {
+            return [true, $active_users['data']];
+        } else {
+            return [false, 'currently there are no active users'];
+        }
+    }
+
+    public function allAdminUsers()
+    {
+        $all_users = parent::selectData('users', ['id', 'email', 'last_login_date', 'createdAt', 'permissions', 'login_status'], false);
+
+        if ($all_users['data']) {
+            return [true, $all_users['data']];
+        } else {
+            return [false, 'error getting all admin users information'];
+        }
+    }
 }

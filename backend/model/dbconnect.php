@@ -33,9 +33,11 @@ $CSRFtoken = bin2hex(openssl_random_pseudo_bytes(24));
 $includes = array(
     'connect.php',
     'functions.php',
-    'plugins.php',
     'database_controls.php',
-    'stats.php'
+    'stats.php',
+    'functions_class.php',
+    'plugins.php'
+
 );
 
 foreach ($includes as $file) {

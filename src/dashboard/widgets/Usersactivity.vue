@@ -5,12 +5,25 @@
     <div class="header">
         <h4>Admin users login activity</h4>
     </div>
-    <ul class="list-group list-group-flush">
-      <li class="list-group-item" v-for="n in 3">
-          <p class="font-weight-bold">Jason Reid - ADM_a2e724bc6a0a2f - created 2018-05-10</p>
-          <p><i>Last Logged in: 2018-05-10 20:18:01</i></p>
-      </li>
-    </ul>
+    <div v-if="!error">
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item" v-for="user in active_users">
+              <p class="font-weight-bold">{{user.email}} - ID: {{user.id}} - created {{user.createdAt}}</p>
+              <p><i>Last Logged in: {{user.last_login_date}}</i></p>
+              <p>
+                  &nbsp;&nbsp;
+                  <span class="badge badge-success">active</span>
+                  <span class="badge badge-info" v-if="user.email == $route.meta.email">YOU</span>
+              </p>
+          </li>
+        </ul>
+    </div>
+    <div v-else>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><h4>ERROR DISPLAYING ACTIVE USERS</h4></li>
+        </ul>
+    </div>
+
 </div>
 </template>
 
@@ -20,8 +33,51 @@ export default {
 		columns: {
 			type: Number,
 			required: true
-		},
-		items: []
+		}
+
+	},
+	data: function() {
+		return {
+			active_users: [],
+			error: false
+		}
+	},
+	methods: {
+		getActiveUsers() {
+			let vm = this;
+
+			$.ajax({
+				url: '/backend/controller/stats.php',
+				type: 'get',
+				data: {
+					stat_type: 'active users'
+				},
+				success(data) {
+					let $data = JSON.parse(data);
+					console.log($data);
+					switch ($data.status.code) {
+						case 200:
+							for (var i = 0; i < $data.info.data.length; i++) {
+								vm.active_users.push($data.info.data[i]);
+							}
+							break;
+						case 400:
+							vm.error = true;
+							break;
+						default:
+
+					}
+
+
+				},
+				error() {
+
+				}
+			})
+		}
+	},
+	mounted() {
+		this.getActiveUsers();
 	}
 }
 </script>

@@ -4,6 +4,8 @@ import Register from './dashboard/register/Admin.vue'
 import Dashboard from './dashboard/Body.vue'
 import Dashboard_home from './dashboard/home/Home.vue'
 import Pluginshome from './dashboard/plugins/Pluginshome.vue'
+import Pluginsmain from './dashboard/plugins/pluginpages/Pluginsmain.vue'
+import Adminusers from './dashboard/plugins/pluginpages/Adminusers.vue'
 
 export const routes = [{
     path: '/admin/login',
@@ -22,12 +24,26 @@ export const routes = [{
       },
       {
         path: 'plugins',
-        component: Pluginshome
+        component: Pluginshome,
+        children: [{
+            path: 'home',
+            component: Pluginsmain
+          },
+          {
+            path: 'adminusers',
+            component: Adminusers
+          },
+          {
+            path: '/',
+            redirect: 'home'
+          }
+        ]
       },
       {
         path: '/dashboard/*',
         redirect: '/dashboard/home'
       }
+
     ]
   },
   {

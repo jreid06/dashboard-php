@@ -1,12 +1,19 @@
 <template lang="html">
 
     <div class="container-fluid h-100" :style="containerStyles">
-        <div v-if="loading">
-            <div class="row h-100 justify-content-center align-items-center">
-                <!-- <h4>LOADING ...</h4> -->
-            </div>
+        <div v-if="!loading" class="h-100">
+            <transition name="fade">
+                <div class="row h-100 align-items-center">
+
+                    	<div class="col-10 offset-1">
+                    		<div class="spinner"></div>
+                    	</div>
+
+                </div>
+            </transition>
+
         </div>
-        <div v-else>
+        <div class="h-100" v-else>
             <template v-if="screenWidth > 768">
                 <div class="d-flex flex-nowrap flex-row dashboard-body h-100">
                         <div class="p-2 dashboard-menu fixed-top" :style="layoutStyles.p1.style1" v-on="{mouseenter: openMenu, mouseleave: closeMenu}">
@@ -15,7 +22,12 @@
                             </div>
                         </div>
                         <div class="p-2" :style="layoutStyles.p2.style1">
-                            <router-view></router-view>
+                            <div class="top-bar">
+
+                            </div>
+                            <transition name="fade">
+                                <router-view></router-view>
+                            </transition>
                         </div>
                 </div>
             </template>
@@ -48,6 +60,7 @@ export default {
 				paddingRight: '0px',
 				minHeight: '100%'
 			},
+			welcomeBack: 0,
 			loading: true,
 			layoutStyles: {
 				p1: {
@@ -76,13 +89,32 @@ export default {
 	},
 	watch: {
 		'$route': function(val) {
+			console.log("REFRESH ROUTE");
+			// this.loading = !this.loading;
+			console.log(val);
+
+			if (this.welcomeBack <= 1) {
+				this.welcomeBack += 1;
+			}
+
 			this.refreshRoute();
-			// this.validateRoute();
+			this.validateRoute();
 		}
 	},
+	beforeDestroy() {
+		console.log('turn loading to true');
+	},
 	methods: {
+		toggleLoadingscreen() {
+			console.log('loading screen toggled');
+			this.loading = !this.loading;
+			// $('.adminuser-row').removeClass('h-100');
+		},
 		validateRoute() {
 			const vm = this;
+			// if (!vm.loading) {
+			// 	vm.toggleLoadingscreen();
+			// }
 			console.log(vm.$route.path);
 			vm.authenticateUser();
 
@@ -100,13 +132,33 @@ export default {
 					let $data = JSON.parse(data);
 					switch ($data.status.code) {
 						case 200:
-							vm.loading = false;
 							console.log('USER authenticated');
 
-							setTimeout(function() {
-								console.log('show toaster');
-								toastr.info(`Welcome back ${$data.info.email}`);
-							}, 1000)
+							vm.$route.meta['email'] = $data.info.email;
+
+							// update routes data with user logged in status
+							let user_info = $data.info.user_info;
+
+							if (!vm.$route.meta.admin_user) {
+								vm.$route.meta['admin_user'] = {};
+							}
+
+							vm.$route.meta['admin_user'].logged_in = true;
+							vm.$route.meta['admin_user'].user_id = user_info.id;
+							vm.$route.meta['admin_user'].user_email = user_info.email;
+							vm.$route.meta['admin_user'].user_type = user_info.permissions;
+
+
+
+							if (vm.welcomeBack <= 1) {
+								setTimeout(function() {
+									console.log('show toaster');
+									toastr.info(`Welcome back ${$data.info.email}`);
+
+									// vm.toggleLoadingscreen();
+								}, 1500);
+							}
+
 
 							break;
 						case 400:
@@ -135,9 +187,7 @@ export default {
 		checkScreenWidth() {
 			const vm = this;
 			$(window).resize(function() {
-				console.log($(window).width());
 				vm.screenWidth = $(window).width();
-
 			})
 		},
 		refreshRoute() {
@@ -147,6 +197,7 @@ export default {
 	},
 	mounted() {
 		this.checkScreenWidth();
+		this.welcomeBack += 1;
 	}
 }
 </script>
@@ -162,6 +213,26 @@ export default {
         transition: all 0.4s ease;
     }
 
+}
+
+.top-bar {
+    height: 45px;
+    background-color: #FDFDFE;
+    width: 96%;
+    position: fixed;
+    z-index: 10000;
+    top: 0;
+    left: 4%;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.5s;
+}
+/* .fade-leave-active below version 2.1.8 */
+.fade-enter,
+.fade-leave-to {
+    opacity: 0;
 }
 
 .dashboard-menu {
