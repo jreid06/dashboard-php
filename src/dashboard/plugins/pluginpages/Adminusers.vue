@@ -1,45 +1,55 @@
 <template>
 <div class="row h-100 justify-content-center align-items-center adminuser-row">
-
 	<template v-if="!loading">
-    	<div class="col-10 offset-1">
-    		<h4 class="pt-8">Admin Users</h4>
-    	</div>
-    	<div class="col-10 offset-1">
-    		<div v-if="error">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-11">
+				<h4 class="pt-8">Admin Users</h4>
+			</div>
+		</div>
+		<div class="row pl-4">
+			<div class="col-8">
+				<div v-if="error">
 
-    		</div>
-    		<div class="user-table-div" v-else>
+				</div>
+				<div class="user-table-div"
+				     v-else>
 
-				<table class="table table-borderless">
-				  <thead>
-				    <tr class="text-capitalize">
-				      <th scope="col" class="text-uppercase">id</th>
-				      <th scope="col">email</th>
-				      <th scope="col">created</th>
-				      <th scope="col">permissions</th>
-					  <th scope="col">last login</th>
-					  <th scope="col" class="text-center">active</th>
-				    </tr>
-				  </thead>
-				  <tbody>
-				    <tr class="user-row" v-for="(user, index) in admin_users">
-				      <th scope="row" class="user-row-item">{{user.id}}</th>
-				      <td class="user-row-item">{{user.email}}</td>
-				      <td class="user-row-item">{{user.createdAt}}</td>
-				      <td class="user-row-item text-capitalize">{{user.permissions}}</td>
-					  <td class="user-row-item">{{user.last_login_date}}</td>
-					  <td class="user-row-item text-center justify-content-center">
-						  <p>
-							  <span class="badge badge-pill badge-success" v-if="user.login_status === 'true'">&nbsp;</span>
-    						  <span class="badge badge-pill badge-danger" v-else>&nbsp;</span>
-						  </p>
+					<table class="table table-borderless">
+						<thead>
+							<tr class="text-capitalize">
+								<th scope="col"
+								    class="text-uppercase">id</th>
+								<th scope="col">email</th>
+								<th scope="col">created</th>
+								<th scope="col">permissions</th>
+								<th scope="col">last login</th>
+								<th scope="col"
+								    class="text-center">active</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr class="user-row"
+							    v-for="(user, index) in admin_users">
+								<th scope="row"
+								    class="user-row-item">{{user.id}}</th>
+								<td class="user-row-item">{{user.email}}</td>
+								<td class="user-row-item">{{user.createdAt}}</td>
+								<td class="user-row-item text-capitalize">{{user.permissions}}</td>
+								<td class="user-row-item">{{user.last_login_date}}</td>
+								<td class="user-row-item text-center justify-content-center">
+									<p>
+										<span class="badge badge-pill badge-success"
+										      v-if="user.login_status === 'true'">&nbsp;</span>
+										<span class="badge badge-pill badge-danger"
+										      v-else>&nbsp;</span>
+									</p>
 
-						  <template v-if="$route.meta.admin_user.user_type === 'superuser'">
-						  <p>
-    						  <span><i class="material-icons">settings</i></span>
-						</p>
-						</template>
+									<template v-if="$route.meta.admin_user.user_type === 'superuser'">
+								  <p>
+		    						  <span><i class="material-icons">settings</i></span>
+								</p>
+								</template>
 
 	</td>
 	</tr>
@@ -47,21 +57,27 @@
 	</table>
 </div>
 </div>
+<recommended-widget :columns="3"></recommended-widget>
+</div>
+</div>
 </template>
 
 <template v-else>
-<transition name="fade">
-	<div class="col-10 offset-1">
-		<div class="spinner"></div>
-	</div>
-</transition>
+<loading-screen></loading-screen>
 </template>
 </div>
 </template>
 
 
 <script>
+import Loader from './../../Loading.vue'
+import Recommendedwidget from './../../widgets/Recommendedwidget.vue'
+
 export default {
+	components: {
+		'loading-screen': Loader,
+		'recommended-widget': Recommendedwidget
+	},
 	data: function() {
 		return {
 			admin_users: [],
@@ -178,7 +194,7 @@ export default {
 }
 
 .user-table-div {
-    margin-top: 40px;
+    // margin-top: 40px;
 
     table {
         background-color: transparent !important;

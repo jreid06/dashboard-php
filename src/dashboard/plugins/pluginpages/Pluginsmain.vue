@@ -1,9 +1,9 @@
 <template lang="html">
 <div class="row">
     <div class="col-10 offset-1">
-		<h4 class="pt-8">Plugins Center</h4>
+		<!-- <h4 class="pt-8">Plugins Center</h4> -->
 	</div>
-	<div class="col-10 offset-1">
+	<div class="col-10 offset-1 pt-5">
 		<div class="row">
 			<div class="col-4 col-lg-3"
 			     v-for="(plugin, index) in plugins">
@@ -13,7 +13,7 @@
 					     src="src/dashboard_assets/app1.png"
 					     alt="Card image cap">
 					<div class="card-body">
-						<p class="card-text text-capitalize"><a :href="'#/dashboard/plugins'+plugin.plugin_link">{{plugin.plugin_name}}</a> </p>
+						<p class="card-text text-capitalize text-center"><a :href="'#/dashboard/plugins'+plugin.plugin_link">{{plugin.plugin_name}}</a> </p>
 					</div>
 				</div>
 			</div>
@@ -51,5 +51,9 @@ export default {
 }
 </script>
 
-<style lang="css">
+<style lang="scss" scoped>
+.card {
+    box-shadow: 0 0 !important;
+    border: 0;
+}
 </style>

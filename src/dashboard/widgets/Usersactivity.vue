@@ -1,5 +1,5 @@
 <template lang="html">
-<div :class="'col-'+columns">
+<div :class="'col-12 col-lg-'+columns">
     <br>
     <hr>
     <div class="header">
@@ -54,6 +54,7 @@ export default {
 				},
 				success(data) {
 					let $data = JSON.parse(data);
+					console.log('success active users');
 					console.log($data);
 					switch ($data.status.code) {
 						case 200:

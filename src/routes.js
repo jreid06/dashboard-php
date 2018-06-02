@@ -1,4 +1,5 @@
 import Nav from './dashboard/navigation/Nav.vue'
+import Loadingscreen from './dashboard/Loading.vue'
 import Login from './dashboard/login/Login.vue'
 import Register from './dashboard/register/Admin.vue'
 import Dashboard from './dashboard/Body.vue'
@@ -10,6 +11,17 @@ import Adminusers from './dashboard/plugins/pluginpages/Adminusers.vue'
 export const routes = [{
     path: '/admin/login',
     component: Login,
+  },
+  {
+    path: '/loading',
+    component: Loadingscreen,
+    beforeEnter: (to, from, next) => {
+      console.log("ROUTE SENT FROM: ");
+      console.log(from);
+      console.log('ROUTE GOING TO: ');
+      console.log(to);
+      next(vm => vm.directUser('param'));
+    }
   },
   {
     path: '/admin/register',

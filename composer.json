@@ -2,6 +2,9 @@
     "require": {
         "guzzlehttp/guzzle": "~6.0",
         "stripe/stripe-php": "^5.7",
-        "catfan/Medoo": "^1.5"
+        "catfan/Medoo": "^1.5",
+        "geoip2/geoip2": "~2.0",
+        "benjamin-smith/php-ipify": "^1.0",
+        "piwik/device-detector": "^3.10"
     }
 }

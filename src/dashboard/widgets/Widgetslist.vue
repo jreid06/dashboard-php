@@ -1,5 +1,5 @@
 <template lang="html">
-<div :class="'col-'+columns">
+<div :class="'col-12 col-lg-'+columns">
     <hr>
 	<div class="card">
 		<div class="card-header">

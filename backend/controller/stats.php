@@ -33,6 +33,7 @@
 
                     $response['info']['data'] = $active_users[1];
                     $response['info']['message'] = 'active users recieved';
+                    $response['info']['generic_data']= $active_users;
                 } else {
                     $response['status']['code'] = 400;
                     $response['status']['message']='error';
@@ -50,6 +51,7 @@
 
                     $response['info']['data'] = $all_users[1];
                     $response['info']['message'] = 'all users retrieved';
+                    $response['generic_data']=$all_users;
                 } else {
                     $response['status']['code'] = 400;
                     $response['status']['message']='error';

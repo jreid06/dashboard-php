@@ -25,6 +25,7 @@
             $form_data = $_POST['form_data'];
 
             // get user submitted credentials
+            $admin_id = $GLOBALS['admin_user_prefix'].bin2hex(random_bytes(10));
             $email = $form_data['email'];
             $password = $form_data['password'];
             $permissions = $form_data['permissionLevel'];
@@ -51,6 +52,7 @@
                     // add details to database
 
                     $fields = array(
+                        'admin_id'=> $admin_id,
                         'email' => $email,
                         'password' => $hash_password,
                         'createdAt' => $current_date['readable_date_db'],

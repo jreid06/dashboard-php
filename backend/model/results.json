@@ -1,0 +1,66 @@
+{
+  "status": {
+    "code": 400,
+    "code_status": "error",
+    "tablet": false,
+    "smartphone": false,
+    "desktop": true
+  },
+  "info": {
+    "message": "you are not logged in. Please login",
+    "ip_data": {
+      "public_ip": "2.25.70.251",
+      "country": {
+        "iso": "GB",
+        "name": "United Kingdom"
+      },
+      "city": "London",
+      "location": {
+        "longitude": -0.0931,
+        "latitude": 51.5142
+      },
+      "user_ip": "127.0.0.1",
+      "browser": "Chrome"
+    },
+    "ip_exists": {
+      "data": {
+        "last_login_ip": "2.25.70.251",
+        "sessions_array": [{
+          "public_ip": "2.25.70.251",
+          "country": {
+            "iso": "GB",
+            "name": "United Kingdom"
+          },
+          "city": "London",
+          "location": {
+            "longitude": -0.0931,
+            "latitude": 51.5142
+          },
+          "user_ip": "127.0.0.1",
+          "browser": "Firefox",
+          "ip_count": 1,
+          "adm_authtoken": "a284e658cfe78e584b2d48981a33b6edfc5b3622acbc3901"
+        }]
+      },
+      "status": 200
+    },
+    "client": {
+      "type": "browser",
+      "name": "Chrome",
+      "short_name": "CH",
+      "version": "66.0.3359.181",
+      "engine": "Blink",
+      "engine_version": ""
+    },
+    "os": {
+      "name": "Mac",
+      "short_name": "MAC",
+      "version": "10.13.4",
+      "platform": ""
+    },
+    "device": "desktop",
+    "model": "",
+    "user_agent": "Mozilla\/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/66.0.3359.181 Safari\/537.36",
+    "HTTP_USER_AGENT": "Mozilla\/5.0 (Macintosh; Intel Mac OS X 10_13_4) AppleWebKit\/537.36 (KHTML, like Gecko) Chrome\/66.0.3359.181 Safari\/537.36"
+  }
+}

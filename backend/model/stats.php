@@ -39,12 +39,26 @@ class get_stat extends Databasecontrols
 
     public function allAdminUsers()
     {
-        $all_users = parent::selectData('users', ['id', 'email', 'last_login_date', 'createdAt', 'permissions', 'login_status'], false);
+        $cache = new Cache();
 
-        if ($all_users['data']) {
-            return [true, $all_users['data']];
+        // get cache results
+        if (!$cache->get("all_admin_users", $result)) {
+
+            // get all users
+            $all_users = parent::selectData('users', ['id', 'email', 'last_login_date', 'createdAt', 'permissions', 'login_status'], false);
+
+            if ($all_users['data']) {
+                $result = $all_users['data'];
+
+                // store in as cache
+                $cache->set("all_admin_users", $result, 1000); // cache result for 5 minutes (300 seconds)
+
+                return [true, $all_users['data'], 'not cache data'];
+            } else {
+                return [false, 'error getting all admin users information'];
+            }
         } else {
-            return [false, 'error getting all admin users information'];
+            return [true, $result, 'cache data'];
         }
     }
 }

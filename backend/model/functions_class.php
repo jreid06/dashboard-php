@@ -5,14 +5,18 @@
  */
 class Projectfunctions
 {
-    public static function verifyPassword($password_entered, $password_database)
+    public static function getRealIpAddr()
     {
-        if (password_verify($password_entered, $password_database)) {
-            return true;
+        if (!empty($_SERVER['HTTP_CLIENT_IP'])) {   //check ip from share internet
+            $ip=$_SERVER['HTTP_CLIENT_IP'];
+        } elseif (!empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {   //to check ip is pass from proxy
+            $ip=$_SERVER['HTTP_X_FORWARDED_FOR'];
         } else {
-            return false;
+            $ip=$_SERVER['REMOTE_ADDR'];
         }
+        return $ip;
     }
+
 
     public static function convertToReadableSize($size)
     {

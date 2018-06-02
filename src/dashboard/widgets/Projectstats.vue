@@ -1,5 +1,5 @@
 <template lang="html">
-<div :class="'col-'+columns">
+<div :class="'stats col-12 col-lg-'+columns">
 	<div class="card">
 		<div class="card-header">
 			Website Overview
@@ -59,5 +59,10 @@ export default {
 <style lang="scss" scoped>
 .card {
     box-shadow: 0 0 !important;
+
+    // @media only screen and (max-width: )
+    @media only screen and (max-width: 991.98px) {
+        margin-top: 30px;
+    }
 }
 </style>

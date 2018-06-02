@@ -1,5 +1,5 @@
 <template lang="html">
-    <div :class="'col-'+columns">
+    <div :class="'col-12 col-lg-'+columns">
         <ul class="list-group">
             <li class="list-group-item list-group-item-light d-flex justify-content-between align-items-center ">
                 Disk Information

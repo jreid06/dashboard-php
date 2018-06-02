@@ -182,7 +182,6 @@ export default {
 			// event.preventDefault();
 			console.log('loginAdmin');
 			const vm = this;
-
 			const schema = Joi.object().keys({
 				email: Joi.string().email(),
 
@@ -199,17 +198,15 @@ export default {
 			if (result.error) {
 				switch (result.error.details[0].context.key) {
 					case "email":
-						console.log("EMAIL ERROR");
 						vm.form.error.status = true;
 						vm.form.error.message = "Invalid email entered";
 						break;
 					case "password":
-						console.log("PASSWORD ERROR");
 						vm.form.error.status = true;
 						vm.form.error.message = "Invalid password entered. Must be 3-30 characters long and contain no special characters";
 						break;
 					default:
-						console.log("generic form error");
+						console.log("form error");
 				}
 			} else {
 				$.ajax({

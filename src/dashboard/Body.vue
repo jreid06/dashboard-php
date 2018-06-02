@@ -1,52 +1,48 @@
 <template lang="html">
-
-    <div class="container-fluid h-100" :style="containerStyles">
-        <div v-if="!loading" class="h-100">
-            <transition name="fade">
-                <div class="row h-100 align-items-center">
-
-                    	<div class="col-10 offset-1">
-                    		<div class="spinner"></div>
-                    	</div>
-
-                </div>
-            </transition>
-
-        </div>
-        <div class="h-100" v-else>
-            <template v-if="screenWidth > 768">
-                <div class="d-flex flex-nowrap flex-row dashboard-body h-100">
-                        <div class="p-2 dashboard-menu fixed-top" :style="layoutStyles.p1.style1" v-on="{mouseenter: openMenu, mouseleave: closeMenu}">
-                            <div class="menu">
-                                <nav-dashboard></nav-dashboard>
-                            </div>
-                        </div>
-                        <div class="p-2" :style="layoutStyles.p2.style1">
-                            <div class="top-bar">
-
-                            </div>
-                            <transition name="fade">
-                                <router-view></router-view>
-                            </transition>
-                        </div>
-                </div>
+        <div class="container-fluid h-100" :style="containerStyles">
+            <template v-if="loading">
+                <loading-screen></loading-screen>
             </template>
             <template v-else>
-                <div class="row h-100 justify-content-center align-items-center">
-                    <div class="col-10 offset-1">
-                        <h4>Please view dashboard on a Tablet, Laptop or Desktop device</h4>
+                <template v-if="screenWidth > 768">
+                    <div class="d-flex flex-nowrap flex-row dashboard-body h-100">
+                            <div class="p-2 dashboard-menu fixed-top" :style="layoutStyles.p1.style1" v-on="{mouseenter: openMenu, mouseleave: closeMenu}">
+                                <div class="menu">
+                                    <nav-dashboard></nav-dashboard>
+                                </div>
+                            </div>
+                            <div class="p-2" :style="layoutStyles.p2.style1">
+                                <div class="top-bar">
+
+                                </div>
+                                <!-- <transition name="fade"> -->
+                                    <router-view></router-view>
+                                <!-- </transition> -->
+                            </div>
                     </div>
-                </div>
+                </template>
+                <template v-else>
+                    <div class="row h-100 justify-content-center align-items-center">
+                        <div class="col-10 offset-1">
+                            <h4>Please view dashboard on a Tablet, Laptop or Desktop device</h4>
+                        </div>
+                    </div>
+                </template>
             </template>
+
+            <!-- </div> -->
         </div>
-    </div>
+
 </template>
 
 <script>
 import Nav from './navigation/Nav.vue'
+import Loader from './Loading.vue'
+
 export default {
 	components: {
-		'nav-dashboard': Nav
+		'nav-dashboard': Nav,
+		'loading-screen': Loader
 	},
 	beforeRouteEnter(to, from, next) {
 		next(vm => vm.validateRoute());
@@ -60,12 +56,14 @@ export default {
 				paddingRight: '0px',
 				minHeight: '100%'
 			},
+			menuWidth: 'calc()',
 			welcomeBack: 0,
 			loading: true,
 			layoutStyles: {
 				p1: {
 					style1: {
-						width: '4%',
+						width: '10%',
+						defaultWidth: '8%',
 						backgroundColor: '#FDFDFE',
 						overflowY: 'hidden',
 						height: '100%'
@@ -77,7 +75,8 @@ export default {
 				},
 				p2: {
 					style1: {
-						width: '96%',
+						defaultWidth: '90%',
+						width: '90%',
 						marginBottom: '50px'
 					},
 					style2: {
@@ -137,12 +136,15 @@ export default {
 							vm.$route.meta['email'] = $data.info.email;
 
 							// update routes data with user logged in status
+							console.log('test');
 							let user_info = $data.info.user_info;
 
 							if (!vm.$route.meta.admin_user) {
 								vm.$route.meta['admin_user'] = {};
 							}
 
+							console.log(user_info);
+							//
 							vm.$route.meta['admin_user'].logged_in = true;
 							vm.$route.meta['admin_user'].user_id = user_info.id;
 							vm.$route.meta['admin_user'].user_email = user_info.email;
@@ -155,7 +157,7 @@ export default {
 									console.log('show toaster');
 									toastr.info(`Welcome back ${$data.info.email}`);
 
-									// vm.toggleLoadingscreen();
+									vm.toggleLoadingscreen();
 								}, 1500);
 							}
 
@@ -175,13 +177,13 @@ export default {
 			})
 		},
 		openMenu() {
-			this.layoutStyles.p1.style1.width = '20%';
+			this.layoutStyles.p1.style1.width = '40%';
 			this.layoutStyles.p2.style1.width = '110%';
 			this.layoutStyles.p1.style1['boxShadow'] = '1px 0px 20px #007BFF';
 		},
 		closeMenu() {
-			this.layoutStyles.p1.style1.width = '4%';
-			this.layoutStyles.p2.style1.width = '96%';
+			this.layoutStyles.p1.style1.width = this.layoutStyles.p1.style1.defaultWidth;
+			this.layoutStyles.p2.style1.width = this.layoutStyles.p2.style1.defaultWidth;
 			this.layoutStyles.p1.style1['boxShadow'] = '0px 0px 0px transparent';
 		},
 		checkScreenWidth() {
@@ -211,8 +213,18 @@ export default {
 
     .p-2 {
         transition: all 0.4s ease;
+
+        // &:nth-child(2){
+        position: relative;
+        z-index: 1;
+        // }
     }
 
+}
+
+.menu {
+    // border: 1px solid red;
+    width: 100%;
 }
 
 .top-bar {
@@ -220,7 +232,7 @@ export default {
     background-color: #FDFDFE;
     width: 96%;
     position: fixed;
-    z-index: 10000;
+    // z-index: 10000;
     top: 0;
     left: 4%;
 }
@@ -236,9 +248,14 @@ export default {
 }
 
 .dashboard-menu {
+    z-index: 1000 !important;
 
     &:hover {
-        width: 20%;
+        width: 50%;
+
+        @media only screen and (min-width: 992px) {
+            width: 0;
+        }
     }
 }
 </style>

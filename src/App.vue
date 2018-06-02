@@ -1,7 +1,5 @@
 <template>
-<v-app>
-	<router-view></router-view>
-</v-app>
+<router-view></router-view>
 </template>
 
 <script>
@@ -83,6 +81,10 @@ html {
 .inp-prepend-custom {
     // border: 1px solid red;
     padding: 5px;
+}
+
+.material-icons {
+    padding-right: 0 !important;
 }
 
 #app {
